@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../store/store";
-import { shallow } from 'zustand/shallow'
 
 
 
@@ -17,8 +16,8 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(undefined)
 
-  const [user, setUser, theme] = useKasirStore(
-    useShallow((state) => [state.user, state.setUser, state.theme])
+  const [user, setUser, theme, login] = useKasirStore(
+    useShallow((state) => [state.user, state.setUser, state.theme, state.login])
   )
 
   // const [user, setUser] = useKasirStore((state) => [state.user, state.setUser]);
@@ -52,10 +51,10 @@ export default function Login() {
       
       switch (res.status) {
         case 200:
+          login()
           setMessages(message)
           localStorage.setItem('token', dataUser.token);
           setUser(dataUser)
-          console.log({dataUser});
           navigate('/dashboard');
           break;
         case 401:

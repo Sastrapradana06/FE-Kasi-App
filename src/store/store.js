@@ -7,6 +7,10 @@ const useKasirStore = create((set) => ({
 
   theme: 'light',
   setTheme: () => set((state) => ({ theme: state.theme === 'light' ? 'dark' : 'light' })),
+
+  authenticated: false,
+  login: () => set({ authenticated: true }),
+  logout: () => set({ authenticated: false }),
 }));
 
 export default useKasirStore
