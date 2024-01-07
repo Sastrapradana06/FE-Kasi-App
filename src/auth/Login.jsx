@@ -16,11 +16,9 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(undefined)
 
-  const [user, setUser, theme, login] = useKasirStore(
-    useShallow((state) => [state.user, state.setUser, state.theme, state.login])
+  const [setUser, login] = useKasirStore(
+    useShallow((state) => [ state.setUser, state.login])
   )
-
-  // const [user, setUser] = useKasirStore((state) => [state.user, state.setUser]);
 
   const navigate = useNavigate();
 
@@ -81,7 +79,6 @@ export default function Login() {
 
     
   }
-  console.log({user, theme});
 
   return (
     <div className="" id='login'>
@@ -102,7 +99,6 @@ export default function Login() {
               <input type={typePw} name='password' className='border bg-transparent px-2 py-1 w-[100%]' required/>
               <div className="absolute cursor-pointer right-3" onClick={togglePasswordVisibility}>
                 {typePw == 'password' ? <FaEyeSlash size={20}/> : <IoEyeSharp size={20}/>}
-                
               </div>
             </div>
           </div>
