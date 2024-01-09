@@ -188,7 +188,7 @@ export default function Produk() {
                     <td className="p-2 border border-gray-300 capitalize">{item.nama_produk}</td>
                     <td className="p-2 border text-end border-gray-300">{item.harga.toLocaleString()}</td>
                     <td className="p-2 border text-end border-gray-300">{item.quantity.toLocaleString()}</td>
-                    <td className="flex items-center justify-center gap-2 border p-2 border-gray-300">
+                    <td className="flex items-center justify-center gap-4 border p-2 border-gray-300">
                       <button className="bg-[#008035] py-1 px-4 rounded-sm text-white" onClick={() => handleEditProduk(item)}>Edit</button>
                       <button className="bg-[crimson] py-1 px-4 rounded-sm text-white hover:bg-[#bc3752]" onClick={() => handleDeleteProduk(item._id)}>Hapus</button>
                     </td>
