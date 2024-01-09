@@ -7,12 +7,19 @@ export async function getProductsApi(data) {
     body: JSON.stringify(data)
   })
 
-  
-  
-  if(response.ok) {
-    const {products } = await response.json()
-    return products
-  } else {
-    return []
-  }
+  const { message, products } = await response.json()
+  return {message, products}
+}
+
+export async function deleteProductsApi(id) {
+  const response = await fetch('http://localhost:3000/api/delete-products', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id })
+  })
+
+  const { data } = await response.json()
+  return data
 }

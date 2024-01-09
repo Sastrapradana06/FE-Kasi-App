@@ -4,6 +4,7 @@ import ShowModal from "../../components/show-modal/ShowModal";
 
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
+import { deleteProductsApi, getProductsApi } from "../../utils/api";
 
 export default function Produk() {
   const [isModal, setIsModal] = useState(false)
@@ -11,12 +12,12 @@ export default function Produk() {
   const [isLoading, setIsLoading] = useState(false)
 
   const [namaProduk, setNamaProduk] = useState('')
-  const [hargaProduk, setHargaProduk] = useState()
-  const [quantityProduk, setQuantityProduk] = useState()
+  const [hargaProduk, setHargaProduk] = useState('')
+  const [quantityProduk, setQuantityProduk] = useState('')
   const [idProduk, setIdProduk] = useState(undefined)
 
 
-  const headers = ["NO", "ID", "NAMA PRODUK", "HARGA", "QUANTITY", "AKSI"];
+  const headers = ["NO", "ID", "NAMA PRODUK", "HARGA", "STOK PRODUK", "AKSI"];
 
   const [products, updateProducts, getProducts] = useKasirStore(
     useShallow((state) => [state.products, state.updateProducts, state.getProducts])
@@ -39,16 +40,9 @@ export default function Produk() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataInput)
-      })
+      const {message, products} = await getProductsApi(dataInput)
 
-      const { message, products } = await response.json()
-      if(response.ok) {
+      if(products.length !== 0) {
         updateProducts(products)
         setMessages(message)
         setIsModal(false)
@@ -64,17 +58,10 @@ export default function Produk() {
 
   const handleDeleteProduk = async (id) => {
     try {
-      const response = await fetch('http://localhost:3000/api/delete-products', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id })
-      })
+      const newProduk = await deleteProductsApi(id)
 
-      if(response.ok) {
-        const { data } = await response.json()
-        updateProducts(data)
+      if(newProduk) {
+        updateProducts(newProduk)
       }
       
     } catch (error) {
@@ -89,14 +76,13 @@ export default function Produk() {
     setHargaProduk(harga)
     setQuantityProduk(quantity)
     setIdProduk(_id)
-
   }
 
   const showModal = () => {
     setMessages(undefined)
     setNamaProduk('')
-    setHargaProduk()
-    setQuantityProduk()
+    setHargaProduk('')
+    setQuantityProduk('')
     setIdProduk(undefined)
     setIsModal(true)
   }
@@ -114,7 +100,7 @@ export default function Produk() {
                 <label htmlFor="">Nama Produk</label>
                 <input 
                   type="text" 
-                  className="bg-transparent border w-[100%] p-1 " 
+                  className="bg-transparent border w-[100%] p-1 outline-blue-400" 
                   name="nama_produk" 
                   value={namaProduk} 
                   onChange={(e) => setNamaProduk(e.target.value)}
@@ -130,7 +116,7 @@ export default function Produk() {
                   <input 
                     type='text' 
                     name='harga' 
-                    className='border bg-transparent px-2 py-1 w-[100%] pl-8 ' 
+                    className='border bg-transparent px-2 py-1 w-[100%] pl-8  outline-blue-400' 
                     value={hargaProduk} 
                     onChange={(e) => setHargaProduk(e.target.value)}
                     required 
@@ -140,10 +126,10 @@ export default function Produk() {
             </div>
             <div className="flex items-center w-[100%]  text-black p-2 justify-between border-b border-gray-300 h-max">
               <div className="flex flex-col w-[45%] gap-2 ">
-                <label htmlFor="">Quantity</label>
+                <label htmlFor="">Stok Produk</label>
                 <input 
                   type="text" 
-                  className="bg-transparent border w-[100%]  p-1 " 
+                  className="bg-transparent border w-[100%]  p-1 outline-blue-400" 
                   name="quantity" 
                   value={quantityProduk} 
                   onChange={(e) => setQuantityProduk(e.target.value)}
