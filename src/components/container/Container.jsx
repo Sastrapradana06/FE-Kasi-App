@@ -11,8 +11,8 @@ import Sidebar from "../sidebar/Sidebar";
 
 
 export default function Container({ children }) {
-  const [user, setUser, theme, setTheme, authenticated, logout] = useKasirStore(
-    useShallow((state) => [state.user, state.setUser, state.theme, state.setTheme, state.authenticated, state.logout])
+  const [user, setUser, theme, setTheme, authenticated, logout, resetState] = useKasirStore(
+    useShallow((state) => [state.user, state.setUser, state.theme, state.setTheme, state.authenticated, state.logout, state.resetState])
   )
   const navigate = useNavigate()
 
@@ -27,6 +27,7 @@ export default function Container({ children }) {
     setUser(undefined)
     navigate('/login')
     localStorage.clear();
+    resetState()
   }
 
   return (

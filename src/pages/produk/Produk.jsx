@@ -1,6 +1,7 @@
 import { useEffect, useState  } from "react";
 import Container from "../../components/container/Container";
 import ShowModal from "../../components/show-modal/ShowModal";
+import { MdOutlineContentPasteSearch } from "react-icons/md";
 
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
@@ -15,6 +16,7 @@ export default function Produk() {
   const [hargaProduk, setHargaProduk] = useState('')
   const [quantityProduk, setQuantityProduk] = useState('')
   const [idProduk, setIdProduk] = useState(undefined)
+  const [cariProduk, setCariProduk] = useState('')
 
 
   const headers = ["NO", "ID", "NAMA PRODUK", "HARGA", "STOK PRODUK", "AKSI"];
@@ -24,10 +26,10 @@ export default function Produk() {
   )
 
   useEffect(() => {
-    if (products.length == 0) {
+    if (products.length == 0 || cariProduk == "") {
       getProducts()
     }
-  }, [products, getProducts])
+  }, [products, getProducts, cariProduk])
 
   const handleDataProduk = async (e) => {
     e.preventDefault()
@@ -85,6 +87,15 @@ export default function Produk() {
     setQuantityProduk('')
     setIdProduk(undefined)
     setIsModal(true)
+  }
+
+  const handleBtnCari = () => {
+    if(cariProduk !== '') {
+      const cariProdukName = products.filter((data) => {
+        return data.nama_produk === cariProduk
+      })
+      updateProducts(cariProdukName)
+    }
   }
 
   return (
@@ -151,15 +162,30 @@ export default function Produk() {
           </form>
         </ShowModal>
       ) : null}
-      <div className="w-[100%] h-[89vh] mt-[6%] p-2  flex flex-col gap-2">
+      <div className="w-[100%] h-[89vh] mt-[6%] p-2  flex flex-col gap-4">
         <h1 className="text-[1.2rem]">Data Produk</h1>
         <div className="w-[100%] h-[100%]  flex flex-col items-end gap-3">
-          <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
+          <div className="w-[100%] flex items-center justify-between">
+            <div className="flex items-center justify-center gap-5">
+              <input 
+                type="text" 
+                value={cariProduk}
+                onChange={(e) => setCariProduk(e.target.value)}
+                name="search_produk" 
+                placeholder="Cari Produk" 
+                className="py-1 px-3 w-[300px] bg-transparent border outline-sky-500 border-gray-400"
+              />
+              <button onClick={handleBtnCari}>
+                <MdOutlineContentPasteSearch size={27} color="green"/>
+              </button>
+            </div>
+            <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
+          </div>
           <table className="border w-[100%] h-max " >
             <thead >
               <tr>
                 {headers.map((header, index) => (
-                  <th key={index} className="border p-2 border-gray-300">
+                  <th key={index} className="border p-2 border-gray-300 font-extrabold bg-[#1e7ea1] text-white">
                     {header}
                   </th>
                 ))}
@@ -174,9 +200,11 @@ export default function Produk() {
                     <td className="p-2 border border-gray-300 capitalize">{item.nama_produk}</td>
                     <td className="p-2 border text-end border-gray-300">{item.harga.toLocaleString()}</td>
                     <td className="p-2 border text-end border-gray-300">{item.quantity.toLocaleString()}</td>
-                    <td className="flex items-center justify-center gap-4 border p-2 border-gray-300">
-                      <button className="bg-[#008035] py-1 px-4 rounded-sm text-white" onClick={() => handleEditProduk(item)}>Edit</button>
-                      <button className="bg-[crimson] py-1 px-4 rounded-sm text-white hover:bg-[#bc3752]" onClick={() => handleDeleteProduk(item._id)}>Hapus</button>
+                    <td className="p-2 border text-end border-gray-300  ">
+                      <div className="flex justify-center items-center gap-3">
+                        <button className="bg-[#008035] py-1 px-4 rounded-sm text-white" onClick={() => handleEditProduk(item)}>Edit</button>
+                        <button className="bg-[crimson] py-1 px-4 rounded-sm text-white hover:bg-[#bc3752]" onClick={() => handleDeleteProduk(item._id)}>Hapus</button>      
+                      </div>
                     </td>
                   </tr>
                 </tbody>

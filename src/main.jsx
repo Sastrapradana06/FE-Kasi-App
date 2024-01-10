@@ -12,6 +12,7 @@ import Dashboard from './pages/dashboard/Dashboard.jsx';
 import Produk from './pages/produk/Produk.jsx';
 import Login from './auth/Login.jsx';
 import Register from './auth/Register.jsx';
+import Karyawan from './pages/karyawan/Karyawan.jsx';
 // import ProtectedPage from './components/protected-page/ProtectedPage.jsx';
 
 const router = createBrowserRouter([
@@ -33,12 +34,16 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element:<Dashboard />,
-    // element: <ProtectedPage element={<Dashboard />} />,
     errorElement: <ErrorPage />
   },
   {
     path: "/produk",
     element: <Produk />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/karyawan",
+    element: <Karyawan />,
     errorElement: <ErrorPage />,
   },
 ]);
