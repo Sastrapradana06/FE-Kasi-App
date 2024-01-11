@@ -13,6 +13,7 @@ import Produk from './pages/produk/Produk.jsx';
 import Login from './auth/Login.jsx';
 import Register from './auth/Register.jsx';
 import Karyawan from './pages/karyawan/Karyawan.jsx';
+import RiwayatMasuk from './pages/riwayat-masuk/RiwayatMasuk.jsx';
 // import ProtectedPage from './components/protected-page/ProtectedPage.jsx';
 
 const router = createBrowserRouter([
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
   {
     path: "/karyawan",
     element: <Karyawan />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/riwayat-masuk",
+    element: <RiwayatMasuk />,
     errorElement: <ErrorPage />,
   },
 ]);

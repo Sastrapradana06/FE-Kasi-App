@@ -49,3 +49,16 @@ export async function deleteKaryawanApi(id) {
   const { data } = await response.json()
   return data
 }
+
+export async function getRiwayatMasukApi(data) {
+  const response = await fetch('http://localhost:3000/api/riwayat-masuk', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+
+  const { message, riwayatMasuk } = await response.json()
+  return {message, riwayatMasuk}
+}

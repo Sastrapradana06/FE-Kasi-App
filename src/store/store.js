@@ -29,7 +29,6 @@ const useKasirStore = create((set) => ({
     }
   },
   updateProducts : (newProducts) => set({products: newProducts}),
-
   karyawan : [],
   getKaryawan: async () => {
     try {
@@ -47,6 +46,24 @@ const useKasirStore = create((set) => ({
     }
   },
   updateKaryawan : (newKaryawan) => set({karyawan: newKaryawan}),
+
+  riwayatMasuk : [],
+  getRiwayatMasuk: async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/get-riwayat-masuk');
+      const {data} = await response.json();
+
+      if(response.status == 200) {
+        set({ riwayatMasuk: data });
+      } else {
+        set({ riwayatMasuk: [] });
+      }
+
+    } catch (error) {
+      console.error('Error fetching riwayatMasuk:', error);
+    }
+  },
+  updateRiwayatMasuk : (data) => set({riwayatMasuk: data}),
 
   resetState : () => set({user: [], products: [], karyawan: []})
 }));

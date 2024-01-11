@@ -1,5 +1,5 @@
 import { AiFillHome } from "react-icons/ai";
-import { FaShoppingCart } from "react-icons/fa"
+import { FaShoppingCart,FaChartLine } from "react-icons/fa"
 import { FaUsers } from "react-icons/fa6";
 
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +26,10 @@ export default function Sidebar() {
         <button className={`flex gap-5 w-[200px] ${pathname == '/karyawan' ? 'text-cyan-600' : ''}`} onClick={() => navigate('/karyawan')}>
           <FaUsers size={25} />
           Karyawan
+        </button>
+        <button className={`flex gap-5 w-[200px] ${pathname == '/riwayat-masuk' ? 'text-cyan-600' : ''}`} onClick={() => navigate('/riwayat-masuk')}>
+          <FaChartLine size={25} />
+          Riwayat Masuk
         </button>
       </div>
     </div>

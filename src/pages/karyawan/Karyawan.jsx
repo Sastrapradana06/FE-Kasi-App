@@ -6,6 +6,7 @@ import { MdPersonSearch } from "react-icons/md";
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
 import {deleteKaryawanApi, getKaryawanApi } from "../../utils/api";
+import TabelKaryawan from "./TabelKaryawan";
 
 export default function Karyawan() {
   const [isModal, setIsModal] = useState(false)
@@ -24,17 +25,15 @@ export default function Karyawan() {
   const [cariKaryawan, setCariKaryawan] = useState('')
 
 
-  const headers = ["NO", "ID", "NAMA", "EMAIL", "NOTEL", "JABATAN", "FOTO", "AKSI"];
-
   const [karyawan, updateKaryawan, getKaryawan] = useKasirStore(
     useShallow((state) => [state.karyawan, state.updateKaryawan, state.getKaryawan])
   )
 
   useEffect(() => {
-    if (karyawan.length == 0 || cariKaryawan == '') {
+    if (karyawan.length == 0 ) {
       getKaryawan()
     }
-  }, [karyawan, getKaryawan, cariKaryawan])
+  }, [])
 
   const handleDataKaryawan = async (e) => {
     e.preventDefault()
@@ -236,48 +235,7 @@ export default function Karyawan() {
             </div>
             <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
           </div>
-          <table className="border w-[100%] h-max " >
-            <thead >
-              <tr>
-                {headers.map((header, index) => (
-                  <th key={index} className="border p-2 border-gray-300 font-extrabold bg-[#1e7ea1] text-white">
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            {karyawan.length > 0 ? (
-              karyawan.map((item, i) => (
-                <tbody key={i} >
-                  <tr>
-                    <td className="border p-1 text-center border-gray-300">{i + 1}</td>
-                    <td className="border p-1 text-center border-gray-300">{item._id}</td>
-                    <td className="p-2 border border-gray-300 capitalize text-center">{item.nama}</td>
-                    <td className="p-2 border text-start border-gray-300">{item.email}</td>
-                    <td className="p-2 border text-end border-gray-300">{item.notel}</td>
-                    <td className="p-2 border text-center border-gray-300">{item.jabatan}</td>
-                    <td className="p-2 border text-end border-gray-300">
-                      <button className="m-auto block">
-                        <img src={item.foto} alt={item.nama} className="w-[50px] h-[50px] object-cover rounded-[100%] m-auto cursor-pointer"/>
-                      </button>
-                    </td>
-                    <td className="p-2 border text-end border-gray-300  ">
-                      <div className="flex justify-center items-center gap-3">
-                        <button className="bg-[#008035] py-1 px-4 rounded-sm text-white" onClick={() => handleEditkaryawan(item)}>Edit</button>
-                        <button className="bg-[crimson] py-1 px-4 rounded-sm text-white hover:bg-[#bc3752]" onClick={() => handleDeleteKaryawan(item._id)}>Hapus</button>      
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              ))
-            ) : (
-              <tbody>
-                <tr>
-                  <td colSpan="6" className="text-center text-[crimson]">Data Karyawan Kosong</td>
-                </tr>
-              </tbody>
-            )}
-          </table>
+          <TabelKaryawan dataKaryawan={karyawan} edit={handleEditkaryawan} deleteKaryawan={handleDeleteKaryawan}/>
         </div>
       </div>
     </Container>

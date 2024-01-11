@@ -6,6 +6,7 @@ import { MdOutlineContentPasteSearch } from "react-icons/md";
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
 import { deleteProductsApi, getProductsApi } from "../../utils/api";
+import TabelProduk from "./TabelProduk";
 
 export default function Produk() {
   const [isModal, setIsModal] = useState(false)
@@ -19,17 +20,15 @@ export default function Produk() {
   const [cariProduk, setCariProduk] = useState('')
 
 
-  const headers = ["NO", "ID", "NAMA PRODUK", "HARGA", "STOK PRODUK", "AKSI"];
-
   const [products, updateProducts, getProducts] = useKasirStore(
     useShallow((state) => [state.products, state.updateProducts, state.getProducts])
   )
 
   useEffect(() => {
-    if (products.length == 0 || cariProduk == "") {
+    if (products.length == 0) {
       getProducts()
     }
-  }, [products, getProducts, cariProduk])
+  }, [])
 
   const handleDataProduk = async (e) => {
     e.preventDefault()
@@ -37,7 +36,7 @@ export default function Produk() {
     const dataInput = {
       nama_produk: namaProduk.toLowerCase(),
       harga: parseFloat(hargaProduk),
-      quantity: parseFloat(quantityProduk),
+      stok: parseFloat(quantityProduk),
       idProduk
     }
 
@@ -72,11 +71,11 @@ export default function Produk() {
   }
 
   const handleEditProduk = async (data) => {
-    const {_id, nama_produk, harga, quantity} = data
+    const {_id, nama_produk, harga, stok} = data
     showModal()
     setNamaProduk(nama_produk)
     setHargaProduk(harga)
-    setQuantityProduk(quantity)
+    setQuantityProduk(stok)
     setIdProduk(_id)
   }
 
@@ -87,6 +86,7 @@ export default function Produk() {
     setQuantityProduk('')
     setIdProduk(undefined)
     setIsModal(true)
+    setIsLoading(false)
   }
 
   const handleBtnCari = () => {
@@ -181,42 +181,7 @@ export default function Produk() {
             </div>
             <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
           </div>
-          <table className="border w-[100%] h-max " >
-            <thead >
-              <tr>
-                {headers.map((header, index) => (
-                  <th key={index} className="border p-2 border-gray-300 font-extrabold bg-[#1e7ea1] text-white">
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            {products.length > 0 ? (
-              products.map((item, i) => (
-                <tbody key={i} >
-                  <tr>
-                    <td className="border p-1 text-center border-gray-300">{i + 1}</td>
-                    <td className="border p-1 text-center border-gray-300">{item._id}</td>
-                    <td className="p-2 border border-gray-300 capitalize">{item.nama_produk}</td>
-                    <td className="p-2 border text-end border-gray-300">{item.harga.toLocaleString()}</td>
-                    <td className="p-2 border text-end border-gray-300">{item.quantity.toLocaleString()}</td>
-                    <td className="p-2 border text-end border-gray-300  ">
-                      <div className="flex justify-center items-center gap-3">
-                        <button className="bg-[#008035] py-1 px-4 rounded-sm text-white" onClick={() => handleEditProduk(item)}>Edit</button>
-                        <button className="bg-[crimson] py-1 px-4 rounded-sm text-white hover:bg-[#bc3752]" onClick={() => handleDeleteProduk(item._id)}>Hapus</button>      
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              ))
-            ) : (
-              <tbody>
-                <tr>
-                  <td colSpan="6" className="text-center text-[crimson]">Data Produk Kosong</td>
-                </tr>
-              </tbody>
-            )}
-          </table>
+          <TabelProduk  dataProduk={products} edit={handleEditProduk} deleteProduk={handleDeleteProduk}/>
         </div>
       </div>
     </Container>
