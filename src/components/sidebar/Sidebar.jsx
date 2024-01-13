@@ -1,6 +1,7 @@
 import { AiFillHome } from "react-icons/ai";
-import { FaShoppingCart,FaChartLine } from "react-icons/fa"
+import { FaShoppingCart } from "react-icons/fa"
 import { FaUsers } from "react-icons/fa6";
+import { PiChartLineDownBold,PiChartLineUpBold } from "react-icons/pi";
 
 import { useNavigate } from 'react-router-dom';
 import { useLocation  } from 'react-router-dom';
@@ -28,8 +29,12 @@ export default function Sidebar() {
           Karyawan
         </button>
         <button className={`flex gap-5 w-[200px] ${pathname == '/riwayat-masuk' ? 'text-cyan-600' : ''}`} onClick={() => navigate('/riwayat-masuk')}>
-          <FaChartLine size={25} />
+          <PiChartLineDownBold size={25} />
           Riwayat Masuk
+        </button>
+        <button className={`flex gap-5 w-[200px] ${pathname == '/riwayat-keluar' ? 'text-cyan-600' : ''}`} onClick={() => navigate('/riwayat-keluar')}>
+          <PiChartLineUpBold size={25} />
+          Riwayat Keluar
         </button>
       </div>
     </div>

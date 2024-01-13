@@ -2,6 +2,7 @@ import { useEffect, useState  } from "react";
 import Container from "../../components/container/Container";
 import ShowModal from "../../components/show-modal/ShowModal";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
+import { RxReset } from "react-icons/rx";
 
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
@@ -98,6 +99,11 @@ export default function Produk() {
     }
   }
 
+  const resetCariProduk = () => {
+    getProducts()
+    setCariProduk('')
+  }
+
   return (
     <Container>
       {isModal ? (
@@ -178,6 +184,11 @@ export default function Produk() {
               <button onClick={handleBtnCari}>
                 <MdOutlineContentPasteSearch size={27} color="green"/>
               </button>
+              {cariProduk !== '' && (
+                <button onClick={resetCariProduk}>
+                  <RxReset size={27} color="crimson"/>
+                </button>
+              )}
             </div>
             <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
           </div>

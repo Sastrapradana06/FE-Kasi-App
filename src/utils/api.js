@@ -75,3 +75,30 @@ export async function deleteRiwayatMasukApi(id) {
   const { data } = await response.json()
   return data
 }
+
+
+export async function getRiwayatKeluarApi(data) {
+  const response = await fetch('http://localhost:3000/api/riwayat-keluar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+
+  const { message, riwayatKeluar } = await response.json()
+  return {message, riwayatKeluar}
+}
+
+export async function deleteRiwayatKeluarApi(id) {
+  const response = await fetch('http://localhost:3000/api/delete-riwayat-keluar', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id })
+  })
+
+  const { data } = await response.json()
+  return data
+}

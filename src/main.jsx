@@ -14,6 +14,7 @@ import Login from './auth/Login.jsx';
 import Register from './auth/Register.jsx';
 import Karyawan from './pages/karyawan/Karyawan.jsx';
 import RiwayatMasuk from './pages/riwayat-masuk/RiwayatMasuk.jsx';
+import RiwayatKeluar from './pages/riwayat-keluar/RiwayatKeluar.jsx';
 // import ProtectedPage from './components/protected-page/ProtectedPage.jsx';
 
 const router = createBrowserRouter([
@@ -50,6 +51,11 @@ const router = createBrowserRouter([
   {
     path: "/riwayat-masuk",
     element: <RiwayatMasuk />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/riwayat-keluar",
+    element: <RiwayatKeluar />,
     errorElement: <ErrorPage />,
   },
 ]);

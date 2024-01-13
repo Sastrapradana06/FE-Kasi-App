@@ -9,10 +9,10 @@ import { RxReset } from "react-icons/rx";
 
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
-import { getRiwayatMasukApi, deleteRiwayatMasukApi } from "../../utils/api";
-import TabelRiwayatMasuk from "./TabelRiwayatMasuk";
+import { getRiwayatKeluarApi, deleteRiwayatKeluarApi } from "../../utils/api";
+import TabelRiwayatKeluar from "./TabelRiwayatKeluar";
 
-export default function RiwayatMasuk() {
+export default function RiwayatKeluar() {
   const [isModal, setIsModal] = useState(false)
   const [messages, setMessages] = useState(undefined)
   const [isLoading, setIsLoading] = useState(false)
@@ -24,15 +24,15 @@ export default function RiwayatMasuk() {
   const [keterangan, setKeterangan] = useState('')
 
 
-  const [idTransaksiMasuk, setIdTransaksiMasuk] = useState(undefined);
+  const [idRiwayatKeluar, setIdRiwayatKeluar] = useState(undefined);
   const [cariRiwayat, setCariRiwayat] = useState('')
 
   const [isDisabled, setIsDisabled] = useState(false)
 
 
 
-  const [products, getProducts, riwayatMasuk, updateRiwayatMasuk, getRiwayatMasuk] = useKasirStore(
-    useShallow((state) => [state.products, state.getProducts, state.riwayatMasuk, state.updateRiwayatMasuk, state.getRiwayatMasuk])
+  const [products, getProducts, riwayatKeluar, updateRiwayatKeluar, getRiwayatKeluar] = useKasirStore(
+    useShallow((state) => [state.products, state.getProducts, state.riwayatKeluar, state.updateRiwayatKeluar, state.getRiwayatKeluar])
   )
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export default function RiwayatMasuk() {
       getProducts()
     }
 
-    if (riwayatMasuk.length == 0) {
-      getRiwayatMasuk()
+    if (riwayatKeluar.length == 0) {
+      getRiwayatKeluar()
     }
   }, [])
 
@@ -49,21 +49,21 @@ export default function RiwayatMasuk() {
   const handleRiwayat = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+    setMessages(undefined)
     const dataInput = {
       nama_produk: (namaProduk == '' ? products[0].nama_produk.toLowerCase() : namaProduk.toLowerCase()),
       quantity: parseFloat(quantity),
       totalHarga: parseFloat(totalHarga),
       tanggalTransaksi,
       keterangan,
-      idTransaksiMasuk
+      idRiwayatKeluar
     }
 
-
     try {
-      const { message, riwayatMasuk } = await getRiwayatMasukApi(dataInput)
+      const { message, riwayatKeluar } = await getRiwayatKeluarApi(dataInput)
 
-      if (riwayatMasuk.length !== 0) {
-        updateRiwayatMasuk(riwayatMasuk)
+      if (riwayatKeluar.length !== 0) {
+        updateRiwayatKeluar(riwayatKeluar)
         setMessages(message)
         getProducts()
         setIsModal(false)
@@ -78,12 +78,11 @@ export default function RiwayatMasuk() {
   }
 
   const handleDeleteRiwayat = async (id) => {
-    console.log({ id });
     try {
-      const newRiwayatMasuk = await deleteRiwayatMasukApi(id)
+      const newRiwayatKeluar = await deleteRiwayatKeluarApi(id)
 
-      if (newRiwayatMasuk) {
-        updateRiwayatMasuk(newRiwayatMasuk)
+      if (newRiwayatKeluar) {
+        updateRiwayatKeluar(newRiwayatKeluar)
       }
 
     } catch (error) {
@@ -100,7 +99,7 @@ export default function RiwayatMasuk() {
     setTotalHarga(total_harga)
     setTanggalTransaksi(tgl_transaksi)
     setKeterangan(keterangan)
-    setIdTransaksiMasuk(_id)
+    setIdRiwayatKeluar(_id)
     setIsDisabled(true)
   }
 
@@ -111,7 +110,7 @@ export default function RiwayatMasuk() {
     setQuantity('')
     setTotalHarga('')
     setKeterangan('')
-    setIdTransaksiMasuk(undefined)
+    setIdRiwayatKeluar(undefined)
     setIsModal(true)
     setIsLoading(false)
     setTanggalTransaksi('')
@@ -121,15 +120,15 @@ export default function RiwayatMasuk() {
 
   const handleBtnCari = () => {
     if (cariRiwayat !== '') {
-      const cariRiwayatMasuk = riwayatMasuk.filter((data) => {
+      const cariRiwayatKeluar = riwayatKeluar.filter((data) => {
         return data.nama_produk === cariRiwayat
       })
-      updateRiwayatMasuk(cariRiwayatMasuk)
+      updateRiwayatKeluar(cariRiwayatKeluar)
     }
   }
 
   const resetCariRiwayat = () => {
-    getRiwayatMasuk()
+    getRiwayatKeluar()
     setCariRiwayat('')
   }
 
@@ -140,7 +139,7 @@ export default function RiwayatMasuk() {
         <ShowModal>
           <form className="w-[50%] h-max border rounded-lg flex flex-col  overflow-hidden bg-[#f5f5f5]" onSubmit={handleRiwayat}>
             <div className="w-[100%] h-max bg-[#278bc4] p-3">
-              <h1>Input Transaksi Masuk</h1>
+              <h1>Input Transaksi Keluar</h1>
             </div>
             <div className="flex items-center w-[100%]  text-black p-3 justify-between  h-max">
               <div className="flex flex-col w-[45%] gap-2 ">
@@ -213,7 +212,7 @@ export default function RiwayatMasuk() {
               {messages ? <p className=' text-[crimson]'>{messages}</p> : <p></p>}
               <div className="">
                 <button className="border py-1 px-7 rounded-lg bg-[crimson] text-white hover:bg-[#ba3650]" onClick={() => setIsModal(false)}>Close</button>
-                {!idTransaksiMasuk ? (
+                {!idRiwayatKeluar ? (
                   <button className="border py-1 px-7 rounded-lg bg-[#278bc4] text-white hover:bg-[#3685b4]" type="submit" disabled={isLoading}>{isLoading ? 'Loading' : 'Tambah'}</button>
                 ) : (
                   <button className="border py-1 px-7 rounded-lg bg-[#278bc4] text-white hover:bg-[#3685b4]" type="submit" disabled={isLoading}>{isLoading ? 'Loading' : 'Ubah'}</button>
@@ -224,7 +223,7 @@ export default function RiwayatMasuk() {
         </ShowModal>
       ) : null}
       <div className="w-[100%] h-[89vh] mt-[6%] p-2  flex flex-col gap-4">
-        <h1 className="text-[1.2rem]">Data Riwayat Masuk</h1>
+        <h1 className="text-[1.2rem]">Data Riwayat Keluar</h1>
         <div className="w-[100%] h-[100%]  flex flex-col items-end gap-3">
           <div className="w-[100%] flex items-center justify-between">
             <div className="flex items-center justify-center gap-5">
@@ -233,7 +232,7 @@ export default function RiwayatMasuk() {
                 value={cariRiwayat}
                 onChange={(e) => setCariRiwayat(e.target.value)}
                 name="search_riwayat"
-                placeholder="Cari Riwayat Masuk"
+                placeholder="Cari Riwayat Keluar"
                 className="py-1 px-3 w-[300px] bg-transparent border border-gray-400 outline-sky-500"
               />
               <button onClick={handleBtnCari} className="font-extrabold">
@@ -247,7 +246,7 @@ export default function RiwayatMasuk() {
             </div>
             <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
           </div>
-          <TabelRiwayatMasuk data={riwayatMasuk} edit={handleEditRiwayat} deleteRiwayat={handleDeleteRiwayat} />
+          <TabelRiwayatKeluar data={riwayatKeluar} edit={handleEditRiwayat} deleteRiwayat={handleDeleteRiwayat} />
         </div>
       </div>
     </Container>

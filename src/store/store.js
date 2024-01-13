@@ -12,6 +12,7 @@ const useKasirStore = create((set) => ({
   login: () => set({ authenticated: true }),
   logout: () => set({ authenticated: false }),
 
+
   products : [],
   getProducts: async () => {
     try {
@@ -29,6 +30,8 @@ const useKasirStore = create((set) => ({
     }
   },
   updateProducts : (newProducts) => set({products: newProducts}),
+
+
   karyawan : [],
   getKaryawan: async () => {
     try {
@@ -47,6 +50,7 @@ const useKasirStore = create((set) => ({
   },
   updateKaryawan : (newKaryawan) => set({karyawan: newKaryawan}),
 
+
   riwayatMasuk : [],
   getRiwayatMasuk: async () => {
     try {
@@ -64,6 +68,25 @@ const useKasirStore = create((set) => ({
     }
   },
   updateRiwayatMasuk : (data) => set({riwayatMasuk: data}),
+
+
+  riwayatKeluar : [],
+  getRiwayatKeluar: async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/get-riwayat-keluar');
+      const {data} = await response.json();
+
+      if(response.status == 200) {
+        set({ riwayatKeluar: data });
+      } else {
+        set({ riwayatKeluar: [] });
+      }
+
+    } catch (error) {
+      console.error('Error fetching riwayatKeluar:', error);
+    }
+  },
+  updateRiwayatKeluar : (data) => set({riwayatKeluar: data}),
 
   resetState : () => set({user: [], products: [], karyawan: []})
 }));
