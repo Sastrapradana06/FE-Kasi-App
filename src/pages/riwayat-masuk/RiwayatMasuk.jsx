@@ -6,7 +6,7 @@ import ShowModal from "../../components/show-modal/ShowModal";
 
 import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
-import { getRiwayatMasukApi } from "../../utils/api";
+import { getRiwayatMasukApi, deleteRiwayatMasukApi } from "../../utils/api";
 import TabelRiwayatMasuk from "./TabelRiwayatMasuk";
 
 export default function RiwayatMasuk() {
@@ -24,6 +24,9 @@ export default function RiwayatMasuk() {
   const [idTransaksiMasuk, setIdTransaksiMasuk] = useState(undefined);
   const [cariKaryawan, setCariKaryawan] = useState('')
 
+  const [isDisabled, setIsDisabled] = useState(false)
+
+
 
   const [products, getProducts, riwayatMasuk, updateRiwayatMasuk, getRiwayatMasuk] = useKasirStore(
     useShallow((state) => [state.products, state.getProducts, state.riwayatMasuk, state.updateRiwayatMasuk, state.getRiwayatMasuk])
@@ -34,7 +37,7 @@ export default function RiwayatMasuk() {
       getProducts()
     }
 
-    if(riwayatMasuk.length == 0) {
+    if (riwayatMasuk.length == 0) {
       getRiwayatMasuk()
     }
   }, [])
@@ -71,33 +74,33 @@ export default function RiwayatMasuk() {
     setIsLoading(false)
   }
 
-  const handleDeleteKaryawan = async (id) => {
-    console.log({id});
-    // try {
-    //   const newKaryawan = await deleteKaryawanApi(id)
+  const handleDeleteRiwayat = async (id) => {
+    console.log({ id });
+    try {
+      const newRiwayatMasuk = await deleteRiwayatMasukApi(id)
 
-    //   if (newKaryawan) {
-    //     updateKaryawan(newKaryawan)
-    //   }
+      if (newRiwayatMasuk) {
+        updateRiwayatMasuk(newRiwayatMasuk)
+      }
 
-    // } catch (error) {
-    //   console.log({ error });
-    // }
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
 
-  const handleEditkaryawan = async (data) => {
-    console.log({data});
-    // const { _id, nama, email, notel, jabatan, foto, alamat } = data
+  const handleEditRiwayat = async (data) => {
+    const { _id, nama_produk, quantity, total_harga, tgl_transaksi, keterangan } = data
     showModal()
-    // setNamaKaryawan(nama)
-    // setEmail(email)
-    // setNotel(notel)
-    // setJabatan(jabatan)
-    // setFotoUrl(foto)
-    // setAlamat(alamat)
-    // setIdKaryawan(_id)
+    setNamaProduk(nama_produk)
+    setQuantity(quantity)
+    setTotalHarga(total_harga)
+    setTanggalTransaksi(tgl_transaksi)
+    setKeterangan(keterangan)
+    setIdTransaksiMasuk(_id)
+    setIsDisabled(true)
   }
+
 
   const showModal = () => {
     setMessages(undefined)
@@ -109,6 +112,8 @@ export default function RiwayatMasuk() {
     setIsModal(true)
     setIsLoading(false)
     setTanggalTransaksi('')
+    setIsDisabled(false)
+
   }
 
   // const handleBtnCari = () => {
@@ -132,7 +137,7 @@ export default function RiwayatMasuk() {
             <div className="flex items-center w-[100%]  text-black p-3 justify-between  h-max">
               <div className="flex flex-col w-[45%] gap-2 ">
                 <label htmlFor="nama_produk">Nama Produk</label>
-                <select id="pilihan" name="nama_produk" className="bg-transparent border w-[100%]  p-1 outline-blue-400" value={namaProduk} onChange={(e) => setNamaProduk(e.target.value)} required>
+                <select id="pilihan" name="nama_produk" className="bg-transparent border w-[100%]  p-1 outline-blue-400" value={namaProduk} onChange={(e) => setNamaProduk(e.target.value)} required disabled={isDisabled}>
                   {products.length > 0 &&
                     products.map((item) => (
                       <option value={item.nama_produk} key={item._id}>
@@ -229,7 +234,7 @@ export default function RiwayatMasuk() {
             </div>
             <button className="border border-transparent py-1 px-3 rounded-md bg-[#00a6ff] hover:bg-[#3c98ca] duration-200 transition-all text-white" onClick={showModal}>Tambah Data</button>
           </div>
-          <TabelRiwayatMasuk data={riwayatMasuk} edit={handleEditkaryawan} deleteKaryawan={handleDeleteKaryawan} />
+          <TabelRiwayatMasuk data={riwayatMasuk} edit={handleEditRiwayat} deleteRiwayat={handleDeleteRiwayat} />
         </div>
       </div>
     </Container>

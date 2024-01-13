@@ -62,3 +62,16 @@ export async function getRiwayatMasukApi(data) {
   const { message, riwayatMasuk } = await response.json()
   return {message, riwayatMasuk}
 }
+
+export async function deleteRiwayatMasukApi(id) {
+  const response = await fetch('http://localhost:3000/api/delete-riwayat-masuk', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id })
+  })
+
+  const { data } = await response.json()
+  return data
+}
