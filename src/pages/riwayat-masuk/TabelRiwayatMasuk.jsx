@@ -49,7 +49,7 @@ export default function TabelRiwayatMasuk({ data, edit, deleteRiwayat }) {
       ) : (
         <tbody>
           <tr>
-            <td colSpan="6" className="text-center text-[crimson]">Data Produk Kosong</td>
+            <td colSpan={8}  className=" text-[crimson] p-1 text-center border-gray-300">Data Riwayat Masuk Kosong</td>
           </tr>
         </tbody>
       )}
