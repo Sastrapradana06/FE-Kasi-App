@@ -12,3 +12,12 @@ export const formatDate = (data) => {
 
   return formattedDate
 }
+
+export const convertDateString = (data) => {
+  const dateObject = new Date(data);
+  const year = dateObject.getFullYear();
+  const month = ('0' + (dateObject.getMonth() + 1)).slice(-2);
+  const day = ('0' + dateObject.getDate()).slice(-2);
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}

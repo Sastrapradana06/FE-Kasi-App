@@ -11,7 +11,7 @@ import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
 import { getRiwayatKeluarApi, deleteRiwayatKeluarApi } from "../../utils/api";
 import TabelRiwayatKeluar from "./TabelRiwayatKeluar";
-import { formatDate } from "../../utils/function";
+import { convertDateString, formatDate } from "../../utils/function";
 
 export default function RiwayatKeluar() {
   const [isModal, setIsModal] = useState(false)
@@ -44,8 +44,18 @@ export default function RiwayatKeluar() {
     if (riwayatKeluar.length == 0) {
       getRiwayatKeluar()
     }
-  }, [])
 
+    if (quantity !== '' && namaProduk !== '') {
+
+      const filterProducts = products.filter((item) => item.nama_produk === namaProduk);
+      const parse = parseFloat(quantity);
+      const total = filterProducts.length > 0 ? filterProducts[0].harga * parse : 0;
+      setTotalHarga(total);
+    } else {
+      setTotalHarga(0);
+    }
+
+  }, [quantity, namaProduk, products])
 
   const handleRiwayat = async (e) => {
     e.preventDefault()
@@ -96,11 +106,12 @@ export default function RiwayatKeluar() {
 
   const handleEditRiwayat = async (data) => {
     const { _id, nama_produk, quantity, total_harga, tgl_transaksi, keterangan } = data
+    const convertedDate = convertDateString(tgl_transaksi)
     showModal()
     setNamaProduk(nama_produk)
     setQuantity(quantity)
     setTotalHarga(total_harga)
-    setTanggalTransaksi(tgl_transaksi)
+    setTanggalTransaksi(convertedDate)
     setKeterangan(keterangan)
     setIdRiwayatKeluar(_id)
     setIsDisabled(true)
@@ -148,6 +159,7 @@ export default function RiwayatKeluar() {
               <div className="flex flex-col w-[45%] gap-2 ">
                 <label htmlFor="nama_produk">Nama Produk</label>
                 <select id="pilihan" name="nama_produk" className="bg-transparent border w-[100%]  p-1 outline-blue-400" value={namaProduk} onChange={(e) => setNamaProduk(e.target.value)} required disabled={isDisabled}>
+                <option value="" disabled selected={!namaProduk}>Pilih Produk</option>
                   {products.length > 0 &&
                     products.map((item) => (
                       <option value={item.nama_produk} key={item._id}>
@@ -180,7 +192,8 @@ export default function RiwayatKeluar() {
                     name='harga'
                     className='border bg-transparent px-2 py-1 w-[100%] pl-8  outline-blue-400'
                     value={totalHarga}
-                    onChange={(e) => setTotalHarga(e.target.value)}
+                    // onChange={(e) => setTotalHarga(e.target.value)}
+                    readOnly
                     required
                   />
                 </div>

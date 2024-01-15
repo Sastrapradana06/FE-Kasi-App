@@ -11,6 +11,7 @@ import useKasirStore from "../store/store";
 
 
 
+
 export default function Login() {
   const [typePw, setTypePw] = useState('password')
   const [isLoading, setIsLoading] = useState(false)
@@ -19,6 +20,7 @@ export default function Login() {
   const [setUser, login] = useKasirStore(
     useShallow((state) => [ state.setUser, state.login])
   )
+
 
   const navigate = useNavigate();
 

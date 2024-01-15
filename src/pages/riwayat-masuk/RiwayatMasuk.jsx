@@ -11,7 +11,7 @@ import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
 import { getRiwayatMasukApi, deleteRiwayatMasukApi } from "../../utils/api";
 import TabelRiwayatMasuk from "./TabelRiwayatMasuk";
-import { formatDate } from "../../utils/function";
+import { convertDateString, formatDate } from "../../utils/function";
 
 export default function RiwayatMasuk() {
   const [isModal, setIsModal] = useState(false)
@@ -44,6 +44,17 @@ export default function RiwayatMasuk() {
     if (riwayatMasuk.length == 0) {
       getRiwayatMasuk()
     }
+
+    // if (quantity !== '' && namaProduk !== '') {
+
+    //   const filterProducts = products.filter((item) => item.nama_produk === namaProduk);
+    //   const parse = parseFloat(quantity);
+    //   const total = filterProducts.length > 0 ? filterProducts[0].harga * parse : 0;
+    //   setTotalHarga(total);
+    // } else {
+    //   setTotalHarga(0);
+    // }
+
   }, [])
 
 
@@ -95,11 +106,12 @@ export default function RiwayatMasuk() {
 
   const handleEditRiwayat = async (data) => {
     const { _id, nama_produk, quantity, total_harga, tgl_transaksi, keterangan } = data
+    const convertedDate = convertDateString(tgl_transaksi)
     showModal()
     setNamaProduk(nama_produk)
     setQuantity(quantity)
     setTotalHarga(total_harga)
-    setTanggalTransaksi(tgl_transaksi)
+    setTanggalTransaksi(convertedDate)
     setKeterangan(keterangan)
     setIdTransaksiMasuk(_id)
     setIsDisabled(true)
@@ -147,6 +159,7 @@ export default function RiwayatMasuk() {
               <div className="flex flex-col w-[45%] gap-2 ">
                 <label htmlFor="nama_produk">Nama Produk</label>
                 <select id="pilihan" name="nama_produk" className="bg-transparent border w-[100%]  p-1 outline-blue-400" value={namaProduk} onChange={(e) => setNamaProduk(e.target.value)} required disabled={isDisabled}>
+                  <option value="" disabled selected={!namaProduk}>Pilih Produk</option>
                   {products.length > 0 &&
                     products.map((item) => (
                       <option value={item.nama_produk} key={item._id}>
@@ -162,7 +175,7 @@ export default function RiwayatMasuk() {
                   className="bg-transparent border w-[100%]  p-1 outline-blue-400"
                   name="quantity"
                   value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => setQuantity(e.target.value)}
                   required
                 />
               </div>
@@ -180,6 +193,7 @@ export default function RiwayatMasuk() {
                     className='border bg-transparent px-2 py-1 w-[100%] pl-8  outline-blue-400'
                     value={totalHarga}
                     onChange={(e) => setTotalHarga(e.target.value)}
+                    // readOnly
                     required
                   />
                 </div>

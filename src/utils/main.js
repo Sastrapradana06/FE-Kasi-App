@@ -4,10 +4,10 @@ export async function prepareChartData() {
   const riwayatKeluar = await fetchKeluarFromDatabase();
   const riwayatMasuk = await fetchMasukFromDatabase();
 
-  console.log({riwayatKeluar, riwayatMasuk});
+  // console.log({riwayatKeluar, riwayatMasuk});
 
   const labels = riwayatKeluar.map(entry => entry.tgl_transaksi);
-  console.log({labels});
+  // console.log({labels});
 
   const groupedData = {};
 
@@ -30,7 +30,7 @@ export async function prepareChartData() {
         total_harga);
   });
 
-  console.log({groupedData});
+  // console.log({groupedData});
 
 
 

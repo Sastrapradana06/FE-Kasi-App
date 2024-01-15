@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+// import { fetchKeluarFromDatabase, fetchMasukFromDatabase } from '../utils/api';
 
 const useKasirStore = create((set) => ({
   
@@ -87,8 +88,8 @@ const useKasirStore = create((set) => ({
     }
   },
   updateRiwayatKeluar : (data) => set({riwayatKeluar: data}),
-
   resetState : () => set({user: [], products: [], karyawan: []})
+  
 }));
 
 export default useKasirStore
