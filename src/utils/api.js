@@ -50,6 +50,13 @@ export async function deleteKaryawanApi(id) {
   return data
 }
 
+
+export async function fetchMasukFromDatabase() {
+  const response = await fetch('http://localhost:3000/api/get-riwayat-masuk');
+  const {data} = await response.json();
+  return data;
+}
+
 export async function getRiwayatMasukApi(data) {
   const response = await fetch('http://localhost:3000/api/riwayat-masuk', {
     method: 'POST',
@@ -77,6 +84,12 @@ export async function deleteRiwayatMasukApi(id) {
 }
 
 
+export async function fetchKeluarFromDatabase() {
+  const response = await fetch('http://localhost:3000/api/get-riwayat-keluar');
+  const {data} = await response.json();
+  return data;
+}
+
 export async function getRiwayatKeluarApi(data) {
   const response = await fetch('http://localhost:3000/api/riwayat-keluar', {
     method: 'POST',
@@ -102,3 +115,4 @@ export async function deleteRiwayatKeluarApi(id) {
   const { data } = await response.json()
   return data
 }
+

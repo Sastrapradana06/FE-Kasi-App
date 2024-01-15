@@ -16,11 +16,11 @@ export default function Container({ children }) {
   )
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if(!authenticated) {
-      navigate('/login')
-    }
-  }, [authenticated, navigate])
+  // useEffect(() => {
+  //   if(!authenticated) {
+  //     navigate('/login')
+  //   }
+  // }, [authenticated, navigate])
 
   const handleLogOut = () => {
     logout()

@@ -3,3 +3,12 @@ export const handleFileChange = (e) => {
   const imageUrl = URL.createObjectURL(file);
   return imageUrl
 };
+
+export const formatDate = (data) => {
+  const date = new Date(data);
+
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('id-ID', options);
+
+  return formattedDate
+}

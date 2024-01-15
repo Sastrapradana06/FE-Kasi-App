@@ -11,6 +11,7 @@ import { useShallow } from 'zustand/react/shallow'
 import useKasirStore from "../../store/store";
 import { getRiwayatMasukApi, deleteRiwayatMasukApi } from "../../utils/api";
 import TabelRiwayatMasuk from "./TabelRiwayatMasuk";
+import { formatDate } from "../../utils/function";
 
 export default function RiwayatMasuk() {
   const [isModal, setIsModal] = useState(false)
@@ -53,7 +54,7 @@ export default function RiwayatMasuk() {
       nama_produk: (namaProduk == '' ? products[0].nama_produk.toLowerCase() : namaProduk.toLowerCase()),
       quantity: parseFloat(quantity),
       totalHarga: parseFloat(totalHarga),
-      tanggalTransaksi,
+      tanggalTransaksi: formatDate(tanggalTransaksi),
       keterangan,
       idTransaksiMasuk
     }
