@@ -14,17 +14,27 @@ export default function Dashboard() {
   const [transaksiKeluar, setTransaksiKeluar] = useState(0)
   const [totalProfit, setTotalProfit] = useState(0)
 
-  const [products, karyawan, riwayatMasuk, riwayatKeluar] = useKasirStore(
-    useShallow((state) => [state.products, state.karyawan, state.riwayatMasuk, state.riwayatKeluar])
+  const [products, karyawan, riwayatMasuk, riwayatKeluar, getProducts, getKaryawan, getRiwayatMasuk, getRiwayatKeluar, isEffectRun, setIsEffectRun] = useKasirStore(
+    useShallow((state) => [
+      state.products, state.karyawan, state.riwayatMasuk, state.riwayatKeluar, state.getProducts, state.getKaryawan, state.getRiwayatMasuk, state.getRiwayatKeluar, state.isEffectRun, state.setIsEffectRun
+    ])
   )
 
-  // console.log({products, karyawan, riwayatMasuk, riwayatKeluar});
+  console.log({isEffectRun});
 
   useState(() => {
+    if (!isEffectRun) {
+      getProducts();
+      getKaryawan();
+      getRiwayatMasuk();
+      getRiwayatKeluar();
+
+      setIsEffectRun(true)
+    }
+
     const totalHargaMasuk = riwayatMasuk.reduce((accumulator, currentValue) => {
       return accumulator + currentValue.total_harga;
     }, 0);
-    // console.log({totalHargaMasuk});
     setTransaksiMasuk(totalHargaMasuk)
 
     const totalHargaKeluar = riwayatKeluar.reduce((accumulator, currentValue) => {

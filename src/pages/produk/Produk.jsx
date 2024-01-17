@@ -16,6 +16,8 @@ export default function Produk() {
 
   const [namaProduk, setNamaProduk] = useState('')
   const [hargaProduk, setHargaProduk] = useState('')
+  const [hargaBeli, setHargaBeli] = useState('')
+  const [satuan, setSatuan] = useState('')
   const [quantityProduk, setQuantityProduk] = useState('')
   const [idProduk, setIdProduk] = useState(undefined)
   const [cariProduk, setCariProduk] = useState('')
@@ -36,8 +38,10 @@ export default function Produk() {
     setIsLoading(true)
     const dataInput = {
       nama_produk: namaProduk.toLowerCase(),
-      harga: parseFloat(hargaProduk),
+      harga_beli: parseFloat(hargaBeli),
+      harga_jual: parseFloat(hargaProduk),
       stok: parseFloat(quantityProduk),
+      satuan: satuan,
       idProduk
     }
 
@@ -52,10 +56,11 @@ export default function Produk() {
         setMessages(message)
       }
 
-      setIsLoading(false)
     } catch (error) {
       console.log(error);
     }
+
+    setIsLoading(false)
   }
 
   const handleDeleteProduk = async (id) => {
@@ -72,19 +77,23 @@ export default function Produk() {
   }
 
   const handleEditProduk = async (data) => {
-    const {_id, nama_produk, harga, stok} = data
+    const {_id, nama_produk, harga_beli, harga_jual, stok, satuan,} = data
     showModal()
     setNamaProduk(nama_produk)
-    setHargaProduk(harga)
+    setHargaBeli(harga_beli)
+    setHargaProduk(harga_jual)
     setQuantityProduk(stok)
+    setSatuan(satuan)
     setIdProduk(_id)
   }
 
   const showModal = () => {
     setMessages(undefined)
+    setHargaBeli('')
     setNamaProduk('')
     setHargaProduk('')
     setQuantityProduk('')
+    setSatuan('')
     setIdProduk(undefined)
     setIsModal(true)
     setIsLoading(false)
@@ -108,12 +117,12 @@ export default function Produk() {
     <Container>
       {isModal ? (
         <ShowModal>
-          <form className="w-[50%] h-max border rounded-lg flex flex-col  overflow-hidden bg-[#f5f5f5]" onSubmit={handleDataProduk}>
+          <form className="w-[50%] h-max border rounded-lg flex flex-col gap-3  overflow-hidden bg-[#f5f5f5]" onSubmit={handleDataProduk}>
             <div className="w-[100%] h-max bg-[#278bc4] p-3">
               <h1>Input Data Produk</h1>
             </div>
             <div className="flex items-center w-[100%]  text-black p-3 justify-between  h-max">
-              <div className="flex flex-col w-[45%] gap-2 ">
+              <div className="flex flex-col w-[100%] gap-2 ">
                 <label htmlFor="">Nama Produk</label>
                 <input 
                   type="text" 
@@ -124,8 +133,26 @@ export default function Produk() {
                   required 
                 />
               </div>
+            </div>
+            <div className="flex items-center w-[100%]  text-black p-2 justify-between h-max">
               <div className="flex flex-col w-[45%] gap-2">
-                <label htmlFor="">Harga</label>
+                <label htmlFor="">Harga Beli</label>
+                <div className="flex items-center gap-2 justify-between  relative ">
+                  <div className="absolute cursor-pointer left-1">
+                    <p>Rp.</p>
+                  </div>
+                  <input 
+                    type='text' 
+                    name='harga_beli' 
+                    className='border bg-transparent px-2 py-1 w-[100%] pl-8  outline-blue-400' 
+                    value={hargaBeli} 
+                    onChange={(e) => setHargaBeli(e.target.value)}
+                    required 
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col w-[45%] gap-2">
+                <label htmlFor="">Harga Jual</label>
                 <div className="flex items-center gap-2 justify-between  relative ">
                   <div className="absolute cursor-pointer left-1">
                     <p>Rp.</p>
@@ -150,6 +177,17 @@ export default function Produk() {
                   name="quantity" 
                   value={quantityProduk} 
                   onChange={(e) => setQuantityProduk(e.target.value)}
+                  required 
+                />
+              </div>
+              <div className="flex flex-col w-[45%] gap-2 ">
+                <label htmlFor="">Satuan</label>
+                <input 
+                  type="text" 
+                  className="bg-transparent border w-[100%]  p-1 outline-blue-400" 
+                  name="satuan" 
+                  value={satuan} 
+                  onChange={(e) => setSatuan(e.target.value)}
                   required 
                 />
               </div>

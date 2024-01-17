@@ -45,22 +45,29 @@ export default function RiwayatMasuk() {
       getRiwayatMasuk()
     }
 
-    // if (quantity !== '' && namaProduk !== '') {
+    if (quantity !== '' && namaProduk !== '') {
+      const filterProducts = products.filter((item) => item.nama_produk === namaProduk);
+      const parse = parseFloat(quantity);
+      const total = filterProducts.length > 0 ? filterProducts[0].harga_beli * parse : 0;
+      setTotalHarga(total);
+    } else {
+      setTotalHarga(0);
+    }
 
-    //   const filterProducts = products.filter((item) => item.nama_produk === namaProduk);
-    //   const parse = parseFloat(quantity);
-    //   const total = filterProducts.length > 0 ? filterProducts[0].harga * parse : 0;
-    //   setTotalHarga(total);
-    // } else {
-    //   setTotalHarga(0);
-    // }
-
-  }, [])
+  }, [quantity, namaProduk, products])
 
 
   const handleRiwayat = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+    setMessages(undefined)
+
+    if(quantity == 0) {
+      setMessages('Quanitity tidak boleh 0')
+      setIsLoading(false)
+      return false
+    }
+
     const dataInput = {
       nama_produk: (namaProduk == '' ? products[0].nama_produk.toLowerCase() : namaProduk.toLowerCase()),
       quantity: parseFloat(quantity),
@@ -192,8 +199,8 @@ export default function RiwayatMasuk() {
                     name='harga'
                     className='border bg-transparent px-2 py-1 w-[100%] pl-8  outline-blue-400'
                     value={totalHarga}
-                    onChange={(e) => setTotalHarga(e.target.value)}
-                    // readOnly
+                    // onChange={(e) => setTotalHarga(e.target.value)}
+                    readOnly
                     required
                   />
                 </div>

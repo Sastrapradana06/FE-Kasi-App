@@ -11,16 +11,16 @@ import Sidebar from "../sidebar/Sidebar";
 
 
 export default function Container({ children }) {
-  const [user, setUser, theme, setTheme, authenticated, logout, resetState] = useKasirStore(
-    useShallow((state) => [state.user, state.setUser, state.theme, state.setTheme, state.authenticated, state.logout, state.resetState])
+  const [user, setUser, theme, setTheme, authenticated, logout, resetState, setIsEffectRun] = useKasirStore(
+    useShallow((state) => [state.user, state.setUser, state.theme, state.setTheme, state.authenticated, state.logout, state.resetState, state.setIsEffectRun])
   )
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if(!authenticated) {
-  //     navigate('/login')
-  //   }
-  // }, [authenticated, navigate])
+  useEffect(() => {
+    if(!authenticated) {
+      navigate('/login')
+    }
+  }, [authenticated, navigate])
 
   const handleLogOut = () => {
     logout()
@@ -28,6 +28,7 @@ export default function Container({ children }) {
     navigate('/login')
     localStorage.clear();
     resetState()
+    setIsEffectRun(false)
   }
 
   return (

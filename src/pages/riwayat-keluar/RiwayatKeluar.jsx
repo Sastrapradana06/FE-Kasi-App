@@ -49,7 +49,7 @@ export default function RiwayatKeluar() {
 
       const filterProducts = products.filter((item) => item.nama_produk === namaProduk);
       const parse = parseFloat(quantity);
-      const total = filterProducts.length > 0 ? filterProducts[0].harga * parse : 0;
+      const total = filterProducts.length > 0 ? filterProducts[0].harga_jual * parse : 0;
       setTotalHarga(total);
     } else {
       setTotalHarga(0);
@@ -61,6 +61,12 @@ export default function RiwayatKeluar() {
     e.preventDefault()
     setIsLoading(true)
     setMessages(undefined)
+
+    if(quantity == 0) {
+      setMessages('Quanitity tidak boleh 0')
+      setIsLoading(false)
+      return false
+    }
 
     const dataInput = {
       nama_produk: (namaProduk == '' ? products[0].nama_produk.toLowerCase() : namaProduk.toLowerCase()),

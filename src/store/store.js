@@ -88,6 +88,10 @@ const useKasirStore = create((set) => ({
     }
   },
   updateRiwayatKeluar : (data) => set({riwayatKeluar: data}),
+
+  isEffectRun: false,
+  setIsEffectRun: (state) => set({isEffectRun: state}),
+
   resetState : () => set({user: [], products: [], karyawan: []})
   
 }));
